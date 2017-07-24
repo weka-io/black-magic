@@ -27,33 +27,3 @@ def context_manager_aware_decorator(deco):
             return uncm_decorated
 
     return wrapper
-
-
-if __name__ == '__main__':
-    @context_manager_aware_decorator
-    def print_before_and_after(func):
-        @contextmanager
-        def wrapper():
-            print('before')
-            with func() as x:
-                yield x
-            print('after')
-        return wrapper
-
-    @print_before_and_after
-    @contextmanager
-    def foo():
-        print('yey')
-        yield
-        print('yo')
-
-    with foo():
-        print('hi')
-
-    print('=' * 10)
-
-    @print_before_and_after
-    def bar():
-        print('sup')
-
-    bar()

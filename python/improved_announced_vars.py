@@ -55,32 +55,3 @@ class MonkeyPatchLogger(object):
 
 
 logging.Logger.__bases__ += (MonkeyPatchLogger,)
-
-
-logging.basicConfig()
-_logger = logging.getLogger(__name__)
-_logger.setLevel(logging.INFO)
-if __name__ == '__main__':
-
-    # Check outside function
-    for _ in range(2):
-        with _logger.announced_vars():
-            a = 1
-            b = 2
-
-    c = 3
-    with _logger.announced_vars():
-        c
-
-    # Check inside function
-    def foo():
-        for _ in range(2):
-            with _logger.announced_vars():
-                d = 4
-                e = 5
-
-        f = 6
-        with _logger.announced_vars():
-            f
-
-    foo()
