@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from python.context_manager_aware_decorator import context_manager_aware_decorator
+from black_python_magic.context_manager_aware_decorator import context_manager_aware_decorator
 
 
 def test_context_manager_aware_decorator():

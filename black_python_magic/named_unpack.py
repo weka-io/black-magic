@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import dis
 import itertools
 from inspect import currentframe

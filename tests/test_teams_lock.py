@@ -2,7 +2,7 @@ from threading import Thread
 from time import sleep
 from itertools import groupby
 
-from python.teams_lock import TeamsLock
+from black_python_magic.teams_lock import TeamsLock
 
 
 def test_teams_lock():

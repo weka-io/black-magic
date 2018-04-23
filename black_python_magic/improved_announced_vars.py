@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from contextlib import contextmanager
 
 import logging

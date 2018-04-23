@@ -1,4 +1,3 @@
-#!/usr/bin/python
 from threading import RLock, Event
 from collections import Counter
 from contextlib import contextmanager

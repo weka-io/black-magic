@@ -1,4 +1,4 @@
-from python.named_unpack import named_unpack
+from black_python_magic.named_unpack import named_unpack
 
 
 def test_named_unpack():

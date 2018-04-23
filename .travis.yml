@@ -1,0 +1,19 @@
+language: python
+
+install:
+  - pip install gevent PyYaml
+  - pip install sphinx ghp-import
+
+script:
+  - python -m pytest -vv tests
+
+after_success: |-
+  [[ $TRAVIS_JOB_NUMBER = *.1 ]] &&
+  [ $TRAVIS_BRANCH = master ] &&
+  [ $TRAVIS_PULL_REQUEST = false ] &&
+  sphinx-apidoc -o _static black_python_magic &&
+  PYTHONPATH=`pwd`:$PYTHONPATH sphinx-build -M html "." "_build" &&
+  echo "<meta http-equiv=refresh content=0;url=html/_static/black_python_magic.html>" > _build/index.html &&
+  export PATH=$HOME/.local/bin:$PATH &&
+  ghp-import -n _build &&
+  git push -fq https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages

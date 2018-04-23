@@ -18,16 +18,19 @@ class LateDecoratorDescriptor:
 def late_decorator(decorator_factory):
     """
     Create and apply a decorator only after the method is instantiated.
-    class UsageWithLambda:
-        @late_decorator(lambda self: some_decorator_that_needs_the_object(self))
-        def foo(self):
-            # ...
-    class UsageWithAttribute:
-        def decorator_method(self, func):
-            # ...
-        @late_decorator('decorator_method')
-        def foo(self):
-            # ...
+
+    code-block::
+
+        class UsageWithLambda:
+            @late_decorator(lambda self: some_decorator_that_needs_the_object(self))
+            def foo(self):
+                # ...
+        class UsageWithAttribute:
+            def decorator_method(self, func):
+                # ...
+            @late_decorator('decorator_method')
+            def foo(self):
+                # ...
     """
 
     if callable(decorator_factory):
@@ -40,7 +43,3 @@ def late_decorator(decorator_factory):
     def wrapper(func):
         return LateDecoratorDescriptor(decorator_factory, func)
     return wrapper
-
-
-if __name__ == '__main__':
-    pass

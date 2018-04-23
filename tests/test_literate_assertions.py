@@ -1,6 +1,6 @@
 import pytest
 
-from python.literate_assertions import ASSERT
+from black_python_magic.literate_assertions import ASSERT
 
 
 def test_assert_ok():

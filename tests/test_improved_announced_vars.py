@@ -1,4 +1,4 @@
-import python.improved_announced_vars
+import black_python_magic.improved_announced_vars
 
 from . import _logger
 

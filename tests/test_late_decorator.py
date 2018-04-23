@@ -1,7 +1,7 @@
 import pytest
 from functools import wraps
 
-from python.late_decorator import late_decorator
+from black_python_magic.late_decorator import late_decorator
 
 
 def test_late_decorator_lambda():
