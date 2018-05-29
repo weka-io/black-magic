@@ -11,7 +11,7 @@ class ConstructMeta(type):
         if name is None:
             return super(ConstructMeta, cls).__new__(cls, '__CONSTRUCT_HELPER__', bases, dct)
         else:
-            dct.pop('__module__')
+            dct.pop('__module__', None)
             dct.pop('__qualname__', None)
             base, = bases
             params = base.__dict__

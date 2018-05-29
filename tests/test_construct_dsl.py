@@ -1,9 +1,11 @@
 import pytest
+import inspect
 
 from black_python_magic.construct_dsl import construct, construct_kwargs
 
 from collections import OrderedDict
 from weakref import WeakValueDictionary
+
 
 def test_construct_dsl():
     class foo(construct(dict)):
@@ -90,3 +92,31 @@ def test_construct_dsl_custom_dsl():
         double('b')
 
     assert foo == dict(a='1', b=4)
+
+
+def test_construct_dsl_accurate_line_error():
+    class NegativeNumberException(Exception):
+        pass
+
+    class Dsl(OrderedDict):
+        def __setitem__(self, name, value):
+            if isinstance(value, int) and value < 0:
+                raise NegativeNumberException
+            return super().__setitem__(name, value)
+
+    frame_data = {}
+
+    with pytest.raises(NegativeNumberException) as excinfo:
+        class foo(construct(dict, Dsl)):
+            a = 1
+            frame = inspect.currentframe()
+            frame_data['code'] = frame.f_code
+            frame_data['line'] = frame.f_lineno
+            b = -2
+            c = 3
+
+    tb = excinfo.value.__traceback__
+    while tb.tb_frame.f_code is not frame_data['code']:
+        tb = tb.tb_next
+
+    assert tb.tb_lineno == frame_data['line'] + 1
