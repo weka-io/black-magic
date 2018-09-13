@@ -1,0 +1,3 @@
+[submodule "termenu"]
+	path = termenu
+	url = https://github.com/koreno/termenu.git
