@@ -162,7 +162,7 @@ def extract_name(obj, fields):
 @format_rule
 def process_dict(obj: dict, fields, orig_object):
     if orig_object:
-        fields['referent_key'] = [k for k, v in obj.items() if v is orig_object]
+        fields['at'] = [k for k, v in obj.items() if v is orig_object]
 
     for referrer in gc.get_referrers(obj):
         if getattr(referrer, '__dict__', None) is obj:
@@ -172,11 +172,39 @@ def process_dict(obj: dict, fields, orig_object):
 
 
 @format_rule
+def process_tuple_and_list(obj: (list, tuple), fields, orig_object):
+    if orig_object:
+        fields['at'] = [i for i, v in enumerate(obj) if v is orig_object]
+    fields['len'] = len(obj)
+
+
+@format_rule
+def process_set(obj: set, fields):
+    fields['len'] = len(obj)
+
+
+@format_rule
+def process_class_with_slots(obj, fields, orig_object):
+    if orig_object:
+        try:
+            slots = type(obj).__slots__
+        except AttributeError:
+            return
+
+        fields['at'] = [s for s in slots if getattr(obj, s) is orig_object]
+
+
+@format_rule
 def process_cell(obj: CellType, fields):
     fn, = scale_referrers(obj, tuple, types.FunctionType)
     fields['varname'] = fn.__code__.co_freevars[fn.__closure__.index(obj)]
     return fn
 
+
+@format_rule
+def process_frame(obj: types.FrameType, fields, orig_object):
+    if orig_object:
+        fields['at'] = [k for k, v in obj.f_locals.items() if v is orig_object]
 
 if __name__ == "__main__":
     foo = object()
@@ -191,6 +219,20 @@ if __name__ == "__main__":
             return x
         return fn
     ref5 = ref5(foo)
+
+    class Ref6:
+        __slots__ = ('ref6_foo',)
+        def __init__(self, foo):
+            self.ref6_foo = foo
+
+    ref6 = Ref6(foo)
+
+    def ref7():
+        ref7_foo = yield
+        yield
+    ref7 = ref7()
+    next(ref7)
+    ref7.send(foo)
 
     obj = explore_gc_graph(foo)
 
