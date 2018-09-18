@@ -84,6 +84,8 @@ def explore_gc_graph(obj):
             del explorer
             gc.collect()
         elif explorer.return_value is GoBack:
+            if not stack:
+                return
             obj = stack.pop()
             del explorer
             gc.collect()
