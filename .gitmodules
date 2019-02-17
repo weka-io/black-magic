@@ -1,6 +1,0 @@
-[submodule "termenu"]
-	path = termenu
-	url = https://github.com/koreno/termenu.git
-[submodule "easypy"]
-	path = easypy
-	url = git@github.com:weka-io/easypy
