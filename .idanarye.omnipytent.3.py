@@ -59,6 +59,17 @@ def run(ctx, test=choose_test):
 
 
 @task
+def run_term(ctx, test=choose_test):
+    # pytest['-qs']['tests/test_late_decorator.py'] & BANG
+    # pytest['-qs']['tests/test_teams_lock.py'] & BANG
+    # pytest['-qs']['tests/test_literate_assertions.py'] & BANG
+    # pytest['-qs']['tests/test_versioning.py'] & BANG
+    # pytest['-qs']['tests/test_construct_dsl.py'] & BANG
+    # python3['-m', 'black_python_magic.gc_graph_tui'] & TERMINAL_PANEL.size(10)
+    pytest['-qs'][test] & TERMINAL_TAB
+
+
+@task
 def act(ctx):
     pytest & BANG
 
